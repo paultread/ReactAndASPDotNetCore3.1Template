@@ -1,11 +1,17 @@
 import * as React from 'react';
+import {useDispatch} from 'react-redux';
 import { Route } from 'react-router';
+import { actionCreators } from './store/AppSettings'
+
+import Routes from './routes/Routes';
+
+
 import Layout from './components/Layout';
-import Home from './components/Home';
-import Counter from './components/Counter';
-import FetchData from './components/FetchData';
-import CounterComponent from './components/CounterComponent'
-import PostsComponent from './components/PostsComponent';
+import Home from './viewcomponents/Home';
+import Counter from './viewcomponents/Counter';
+import FetchData from './viewcomponents/FetchData';
+import CounterComponent from './viewcomponents/CounterComponent'
+import PostsComponent from './viewcomponents/PostsComponent';
 import CompanyComponent from './ContextVersions/components/CompanyComponent';
 import CompanyComponentRedux from './ReduxVersion/components/CompaniesComponentRedux';
 import CompanyComponentReduxFunc from './ReduxVersion/components/CompaniesComponentReduxFunc';
@@ -17,13 +23,23 @@ import './custom.css'
 
 export default () => (
     <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route exact path='/countercomponent' component={CounterComponent} />
-        <Route path='/fetch-data/:startDateIndex?' component={FetchData} />
-        <Route path='/posts' component={PostsComponent} />
-        <Route path='/companiescontext' component={CompanyComponent} />
-        <Route path='/companiesredux' component={CompanyComponentRedux} />
-        <Route path='/companiesreduxfunc' component={CompanyComponentReduxFunc} />
+         <Route exact path='/' component={Home} />
+         <Route path='/counter' component={Counter} />
+         <Route exact path='/countercomponent' component={CounterComponent} />
+         <Route path='/fetch-data/:startDateIndex?' component={FetchData} />
+         <Route path='/posts' component={PostsComponent} />
+         <Route path='/companiescontext' component={CompanyComponent} />
+         <Route path='/companiesredux' component={CompanyComponentRedux} />
+         <Route path='/companiesreduxfunc' component={CompanyComponentReduxFunc} />
     </Layout>
 );
+
+export const App = () => {
+     const dispatch: any = useDispatch();
+     React.useEffect(() => dispatch(actionCreators.requestAppSettings()), [dispatch]);
+  
+    return (
+      <Routes/>
+    )
+}; 
+//export default App;

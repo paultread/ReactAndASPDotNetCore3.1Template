@@ -22,6 +22,7 @@
 
 //                                 REDUX OVERVIEW
 //--------------------------------------------------------------------------------
+//Intialisation starts in & goes through: index.tsx > App.tsx >  configureStore > StoreIndex.ts 
 //STORE FOLDER
     //----------------------------------------------------------------------------
     //STOREINDEX.TS

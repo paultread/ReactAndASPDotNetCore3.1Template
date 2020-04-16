@@ -1,6 +1,6 @@
 ﻿import { Action, Reducer } from 'redux';
 //import { IncrementCountAction, DecrementCountAction } from '../store/Counter';
-import { IncrementCountAction, DecrementCountAction } from '../viewcomponents/CounterComponent';
+import { IncrementCountAction, DecrementCountAction } from '../../viewcomponents/CounterComponent';
 
 export interface iCounterState {
     numCounter: number;

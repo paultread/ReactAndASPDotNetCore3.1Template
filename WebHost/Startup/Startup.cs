@@ -22,7 +22,6 @@ namespace WebHost.Startup
         //{
         //    Configuration = configuration;
         //}
-        //test
 
         public Startup(IWebHostEnvironment env)
         {
