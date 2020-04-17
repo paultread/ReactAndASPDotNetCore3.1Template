@@ -10,9 +10,7 @@ namespace Application.Models.Configuration
     /// <remarks>Map only the settings you wish to make available to the code base</remarks>
     public class AppSettingsModel
     {
-        public string HostVirtualDirectory { get; set; }
-        public string CorsOrigins { get; set; }
-        public string Key { get; set; }
+        public AuthenticationSettingsModel Authentication { get; set; }
         public string Key1 { get; set; }
         public string Key2 { get; set; }
     }

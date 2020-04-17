@@ -25,10 +25,10 @@ export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }
                                     <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/countercomponent">Counter Component</NavLink>
+                                    <NavLink tag={Link} className="text-dark" to="/countertwo">Counter Component</NavLink>
                                 </NavItem>
                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch Weather</NavLink>
+                                    <NavLink tag={Link} className="text-dark" to="/weather">Fetch Weather</NavLink>
                                 </NavItem>
                                 <NavItem>
                                     <NavLink tag={Link} className="text-dark" to="/posts">Fetch Posts from JSON API</NavLink>
@@ -37,9 +37,9 @@ export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }
                                     <NavLink tag={Link} className="text-dark" to="/companiescontext">Fetch Companies Via Context Func</NavLink>
                                 </NavItem>
                                  <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/companiesredux">Fetch Companies Via Redux Class</NavLink>
+                                    <NavLink tag={Link} className="text-dark" to="/companiesreduxclass">Fetch Companies Via Redux Class</NavLink>
                                 </NavItem>                                 <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/companiesreduxfunc">Fetch Companies Via Redux Func</NavLink>
+                                    <NavLink tag={Link} className="text-dark" to="/companiesreduxfunction">Fetch Companies Via Redux Func</NavLink>
                                 </NavItem>
                             </ul>
                         </Collapse>

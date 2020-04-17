@@ -21,25 +21,30 @@ import CompanyComponentReduxFunc from './ReduxVersion/components/CompaniesCompon
 
 import './custom.css'
 
-export default () => (
-    <Layout>
-         <Route exact path='/' component={Home} />
-         <Route path='/counter' component={Counter} />
-         <Route exact path='/countercomponent' component={CounterComponent} />
-         <Route path='/fetch-data/:startDateIndex?' component={FetchData} />
-         <Route path='/posts' component={PostsComponent} />
-         <Route path='/companiescontext' component={CompanyComponent} />
-         <Route path='/companiesredux' component={CompanyComponentRedux} />
-         <Route path='/companiesreduxfunc' component={CompanyComponentReduxFunc} />
-    </Layout>
-);
+// export default () => (
+        // layout is navbar
+//     <Layout>
+//          <Route exact path='/' component={Home} />
+//          <Route path='/counter' component={Counter} />
+//          <Route exact path='/countercomponent' component={CounterComponent} />
+//          <Route path='/fetch-data/:startDateIndex?' component={FetchData} />
+//          <Route path='/posts' component={PostsComponent} />
+//          <Route path='/companiescontext' component={CompanyComponent} />
+//          <Route path='/companiesredux' component={CompanyComponentRedux} />
+//          <Route path='/companiesreduxfunc' component={CompanyComponentReduxFunc} />
+//     </Layout>
+// );
 
-export const App = () => {
+const App = () => {
      const dispatch: any = useDispatch();
      React.useEffect(() => dispatch(actionCreators.requestAppSettings()), [dispatch]);
   
     return (
-      <Routes/>
+        // This is the nav bar
+        // <Layout> 
+            <Routes/>
+        // </Layout>
+
     )
 }; 
-//export default App;
+export default App;

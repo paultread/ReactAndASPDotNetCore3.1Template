@@ -17,7 +17,7 @@ export type KnownAction = requestAppSettingsAction;
 
 export const actionCreators = {
     requestAppSettings: (): AppThunkAction<KnownAction> => (dispatch) => {
-        axiosService.get(`api/AppSettings`)
+        axiosService.get('http://localhost:59333/ClientAppSettings')
         .then((response: AxiosResponse<AppSettings>) => {
           const { data } = response;
           console.log(data);
