@@ -3,14 +3,19 @@ import {CompaniesActionTypes} from '../reduxStore/companiesStore';
 import { iCompanyState, iCompaniesState} from '../reduxStore/companiesStore';
 import { AppThunkAction, ApplicationState } from '../../store/index';
 import axiosService, {AxiosResponse, AxiosError} from 'axios';
+import axiosServiceWithAuthHeader from '../../axiosIndex';
 import companiesReducer from '../reduxStore/companiesStore';
 import {connect} from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Table, TableRow, TableCell, TableHeader } from 'carbon-react/lib/components/table';
 
+//this has to be imported to use the global store, 
+import {store} from '../../index';
+
 
 
 const CompaniesComponenteduxFunc =() =>{
+    console.log(store.getState());
     //const [companies, setCompanies] = React.useState([{compId: 50, compName: 'ggg'}]);
     //const allReducerStuff = React.useReducer(companiesReducer, {companies:[], isLoading: true});
     //console.log(allReducerStuff);
@@ -21,10 +26,18 @@ const CompaniesComponenteduxFunc =() =>{
     const requestCompanies = async() => {
         //const appState = getState();
         if (companies.isLoading){
-            await axiosService.get('http://localhost:59333/Companies')
+            //HERE
+            //cannot hit endpoint with Authorization tage decoratign it
+            //Probably need to setup in startup.cs somewhere??
+            //TOken is beign passed in, but it is not authorized?
+            
+
+            //await axiosServiceWithAuthHeader.get('http://localhost:59333/Companies')
+            //await axiosServiceWithAuthHeader.post('http://localhost:59333/api/Company', {testerr: 'dd'})
+            await axiosServiceWithAuthHeader.get('https://localhost:44309/companiess')
             .then((response: AxiosResponse<iCompanyState[]>) => {
                 const {data} = response;
-                console.log(data);
+                //console.log(data);
                 dispatch({type:'GET_COMPANIES_FETCHED_REDUX', isLoading: false, companies: data})
             })
             .catch((error: AxiosError) => {

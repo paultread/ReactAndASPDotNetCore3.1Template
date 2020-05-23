@@ -7,6 +7,8 @@ import counterReducer, { iCounterState } from '../store/counterReducer'
 //Redux version
 import companiesReducer, {iCompaniesState} from '../ReduxVersion/reduxStore/companiesStore';
 
+import signInReducer, {iSignInInterface} from '../ReduxVersion/reduxStore/signInStore';
+
 
 //import { IncrementCountAction, DecrementCountAction } from '../actions/counterActions';
 
@@ -18,6 +20,7 @@ export interface ApplicationState {
     postsComponentReducer: iPostsState | undefined;
     //redux version
     companiesReducer: iCompaniesState | undefined;
+    authReducer: iSignInInterface | undefined;
 }
 
 // Whenever an action is dispatched, Redux will update each top-level application state property using
@@ -29,8 +32,10 @@ export const reducers = {
     weatherForecasts: WeatherForecasts.reducer,
     postsComponentReducer: postsStoreReducer,
     //redux version
-    companiesReducer: companiesReducer
+    companiesReducer: companiesReducer,
+    authReducer: signInReducer
 };
+
 
 // This type can be used as a hint on action creators so that its 'dispatch' and 'getState' params are
 // correctly typed to match your store.

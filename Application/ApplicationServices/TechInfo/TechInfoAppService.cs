@@ -1,4 +1,4 @@
-﻿using Application.Dtos;
+﻿using Application.Dtos.Entities;
 using AutoMapper;
 using AutoMapper.QueryableExtensions;
 using EntityFrameworkCore.DbContexts;

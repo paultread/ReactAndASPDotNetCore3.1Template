@@ -1,6 +1,6 @@
 import * as React from 'react';
-import CompanyContextProvider from '../contexts/CompaniesContext';
-import CompanyList from './CompaniesComponent';
+import CompanyContextProvider from '../../ContextVersions/contexts/CompaniesContext';
+import CompaniesComponent from './CompaniesComponent';
 
 export interface iCompanyType {
     compId: number,
@@ -12,7 +12,7 @@ const CompanyComponent = () => {
     return(
         <div>
             <CompanyContextProvider>
-                <CompanyList></CompanyList>
+                <CompaniesComponent></CompaniesComponent>
             </CompanyContextProvider>
         </div>
     )

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import axiosService, {AxiosError, AxiosResponse } from 'axios';
 import { AppThunkAction } from './index';
+import axiosServiceWithAuthHeader from '../axiosIndex';
 
 export interface AppSettings {
     authentication: AuthenticationSettings;
@@ -17,10 +18,12 @@ export type KnownAction = requestAppSettingsAction;
 
 export const actionCreators = {
     requestAppSettings: (): AppThunkAction<KnownAction> => (dispatch) => {
-        axiosService.get('http://localhost:59333/ClientAppSettings')
+      //axiosServiceWithAuthHeader.get('http://localhost:59333/ClientAppSettings')
+      axiosServiceWithAuthHeader.get('https://localhost:44309/ClientAppSettings')
+      //axiosService.get('http://localhost:59333/ClientAppSettings')
         .then((response: AxiosResponse<AppSettings>) => {
           const { data } = response;
-          console.log(data);
+          console.log(response);
           dispatch({ type: 'FETCH_APPSETTINGS', appSettings: data });
         })
         .catch((error: AxiosError) => {

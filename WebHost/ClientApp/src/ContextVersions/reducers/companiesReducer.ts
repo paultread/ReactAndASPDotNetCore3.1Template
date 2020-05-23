@@ -3,14 +3,14 @@ import {CompanyAction} from '../contexts/CompaniesContext';
 import {iCompaniesComponentType} from '../components/CompaniesComponent';
 
 export const companyReducer = (state: iCompaniesComponentType, action: CompanyAction) => {
+    console.log('heeerrreee');
     switch (action.type){
         // case undefined :
         //     return state;
         case 'GET_COMPANIES_FETCH':
             return {
                 ...state
-
-                ,isLoading: false
+                ,isLoading: true
                 //,Companies: action.Companies
                 //state: state.Companies
             }
@@ -20,7 +20,7 @@ export const companyReducer = (state: iCompaniesComponentType, action: CompanyAc
             ,isLoading: false
             //,Companies: [{compId: 1, compName: 'ddd'}]
             ,Companies: action.Companies
-            //state: state.Companies
+            //,state: state.Companies
         }
         default:
             return state;

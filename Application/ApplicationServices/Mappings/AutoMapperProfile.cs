@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using CompanyModel = Common.Entities.Company.Company;
-using Application.Dtos;
+using Application.Dtos.Entities;
+using Application.Dtos.FromAppSettingsJson;
+using Application.Dtos.Identity;
 using TechInfoModel = Common.Entities.TechInfo.TechInfo;
-using AppSettingsModel = Application.Models.Configuration.AppSettingsModel;
-
+using AppSettingsModel = Application.Models.FromAppSettingsJson.Configuration.AppSettingsModel;
+using Common.Entities.UserEnts;
 
 namespace Application.ApplicationServices.Mappings
 {
@@ -21,7 +23,8 @@ namespace Application.ApplicationServices.Mappings
             //Above doesn't seem to be straightforwardly true..., as the below mapping is required
             CreateMap<CompanyModel, CompanyDTO>();
             CreateMap<TechInfoModel, TechInfoDTO>();
-            CreateMap<AppSettingsModel, AppSettingsDTO>();
+            CreateMap<AppSettingsModel, AppSettingsModelDTO>();
+            CreateMap<ApplicationUser, ApplicationUserDTO>();
         }
     }
 }

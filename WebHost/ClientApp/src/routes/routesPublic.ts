@@ -11,16 +11,18 @@ const PostsComponent = React.lazy(() => import('../viewcomponents/PostsComponent
 const CompaniesReduxClassComponent = React.lazy(() => import ('../ReduxVersion/components/CompaniesComponentRedux'));
 const CompaniesReduxFuncComponent = React.lazy(() => import ('../ReduxVersion/components/CompaniesComponentReduxFunc'));
 
-const CompaniesContextFuncComponent = React.lazy(() => import ('../ContextVersions/components/CompaniesComponent'));
+const CompanyContextFuncComponentContainingCompaniesComponent = React.lazy(() => import ('../ContextVersions/components/CompanyComponent'));
+const SignInComponent = React.lazy(() => import ('../ReduxVersion/components/SignInComponent'));
 
 const routesPublic = [
+    {path: '/signin', exact: true, name: 'SignIn', component: SignInComponent},
     {path: '/', exact: true, name: 'Home', component: HomeViewComponent},
     {path: '/counter', exact: true, name: 'Counter', component: CounterComponent},
     {path: '/countertwo', exact: true, name: 'Counter Component', component: CounterComponentTwo},
     {path: '/weather', exact: true, name: 'Fetch Weather', component: WeatherComponent},
     {path: '/posts', exact: true, name: 'Fetch Posts from JSON API', component: PostsComponent},
-    {path: '/companiescontext', exact: true, name: 'Counter', component: CompaniesContextFuncComponent},
-    {path: '/companiesreduxclass', exact: true, name: 'Counter', component: CompaniesReduxClassComponent},
-    {path: '/companiesreduxfunction', exact: true, name: 'Counter', component: CompaniesReduxFuncComponent},
+    {path: '/companiescontext', exact: true, name: 'compcontextfunc', component: CompanyContextFuncComponentContainingCompaniesComponent},
+    {path: '/companiesreduxclass', exact: true, name: 'compreduxclass', component: CompaniesReduxClassComponent},
+    {path: '/companiesreduxfunction', exact: true, name: 'compareduxfunc', component: CompaniesReduxFuncComponent},
 ]; export default routesPublic;
 

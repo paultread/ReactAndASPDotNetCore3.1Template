@@ -9,7 +9,7 @@ namespace EntityFrameworkCore.DbContexts
 {
     public class CrmDbContext: DbContext
     {
-        //these must be teh same name as the entity
+        //these must be the same name as the entity
         public DbSet<Company> Company { get; set; }
         public DbSet<TechInfo> TechInfo { get; set; }
 

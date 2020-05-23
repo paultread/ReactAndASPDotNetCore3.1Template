@@ -35,8 +35,19 @@ namespace WebHost.Startup.ServiceExtensions
                     //this extension method became availabel as soon as reference to the EntityFrameworkCore projetc was added
 
                     //UseSqlServer only became available when a direct using statement for Microsoft Entity Framework Core
-                    options.UseSqlServer(configuration["ConnectionStrings:CRMTestLocal2"], providerOptions => providerOptions.EnableRetryOnFailure());
+                    options.UseSqlServer(
+                        configuration["ConnectionStrings:CRMTestLocal2"],
+                        providerOptions => {
+                            //providerOptions.MigrationsAssembly(assemblyName: "EntityFrameworkCore");
+                            providerOptions.EnableRetryOnFailure();
+                        } 
+                    );
                 });
+
+            services.AddDbContext<IdentityApplicationContext>(options =>
+                 options.UseSqlServer(
+                     configuration["ConnectionStrings:CRMTestLocal2"],
+                     providerOptions => providerOptions.MigrationsAssembly(assemblyName: "EntityFrameworkCore")));
         }
 
     }

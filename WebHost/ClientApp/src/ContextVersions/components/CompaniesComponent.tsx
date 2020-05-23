@@ -1,10 +1,12 @@
 import * as React from 'react';
-import thunk from 'redux-thunk';
+// import thunk from 'redux-thunk';
 import {iCompanyType} from './CompanyComponent';
 import {CompanyContext} from '../contexts/CompaniesContext';
 import axiosService from 'axios'
 import {Table, TableRow, TableCell, TableHeader} from 'carbon-react/lib/components/table';
 import { AxiosResponse, AxiosError } from 'axios'
+import https from 'https';
+import {axiosServiceWithSignInCredToTrue} from '../../axiosIndex';
  
 
 export interface iCompaniesComponentType {
@@ -12,20 +14,28 @@ export interface iCompaniesComponentType {
     ,isLoading: boolean
 }
 
-const CompanListComponent = () => {
+const CompaniesComponent = () => {
     const {state, dispatch} = React.useContext(CompanyContext);
-
+    console.log(state);
     const fetchCompanies = async() => {
+        //process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
+
+
+
         dispatch({ type: 'GET_COMPANIES_FETCH', isLoading: true });
         if (state.isLoading = true){
             try{
-                await axiosService.get('http://localhost:59333/Companies')
-                .then((response: any) => {
+                // const agent = new https.Agent({  
+                //     rejectUnauthorized: false
+                // });    
+                // await axiosService.get('https://localhost:44309/Companies', { httpsAgent: agent })
+                await axiosServiceWithSignInCredToTrue.get('https://localhost:44309/Companies')
+                .then((response: AxiosResponse<iCompanyType[]>) => {
                     //const data: iCompanyType[] = response.data;
                     const {data} = response;
-                    //console.log(data);
-                    dispatch({type: 'GET_COMPANIES_FETCH_COMPLETE', Companies: data, isLoading: false
-                });
+                    console.log(data);
+                    dispatch({type: 'GET_COMPANIES_FETCH_COMPLETE', Companies: data, isLoading: false});
                 })
                 .catch((error: AxiosError) => {
                     console.log('pos1: ',error);
@@ -35,8 +45,6 @@ const CompanListComponent = () => {
                 console.log('pos2: ', error);
             }
         }
-       
-
     };
     //will run on render / rerender (componentDidMount() / componentDidupdate())
     React.useEffect(() =>{
@@ -72,4 +80,4 @@ const CompanListComponent = () => {
         </React.Fragment>
 
     )
-}; export default CompanListComponent;
+}; export default CompaniesComponent;
