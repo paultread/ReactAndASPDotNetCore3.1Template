@@ -3,6 +3,7 @@ import axiosService, {AxiosError, AxiosResponse } from 'axios';
 import { AppThunkAction } from './index';
 import axiosServiceWithAuthHeader from '../axiosIndex';
 
+
 export interface AppSettings {
     authentication: AuthenticationSettings;
     key1: string;

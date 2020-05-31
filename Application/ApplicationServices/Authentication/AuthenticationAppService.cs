@@ -42,18 +42,6 @@ namespace Application.ApplicationServices.Authentication
 
         public async Task<AuthenticationResponseModel> SignInUserAsync(AuthenticateUserModel userToAuthenticate)
         {
-            //@@@@@TODO - Refresh Token 
-            //User authe successful > create refreshToken (alongside JWT), RefreshToken persist against user in DB
-            //Client receieves JWT token after authe, use expiry time of JWT to start timer > run refresh with the refresh_token stored in HttpOnly cookie to get a new JWT and refreshToken < repeat
-            //If app is closed (browser or window closed) timer stops as so does program, silent refresh is stopped
-            //If no refresh after X amount of time has been made to server, remove cookie from server > user has to then authe again
-
-            //User comes back after closing browser >
-            //Silent refresh is tried 
-                //Not ticked 'keep me logged on' or cookie deleted from server after timeout > server deletes refresh_token after X amount of time > failure > redirect to authe |  
-                //Ticked 'keep me logged on' > refresh_token not deleted from server > success (have ticked keep me logged on) > JWT and frefresh_token is return > carry on
-
-
             var resultOfSignInAttempt = await _signInManager.PasswordSignInAsync(userToAuthenticate.Username, userToAuthenticate.Password, isPersistent: false, lockoutOnFailure: false);
             if (!resultOfSignInAttempt.Succeeded)
                 return new AuthenticationResponseModel
@@ -103,9 +91,9 @@ namespace Application.ApplicationServices.Authentication
             return new JwtRefreshToken
             {
                 //this is important - this is what the front end uses for the refresh token
-                //this needs to be random, should not be generated using teh JWT token and an algorithm as if the JWT token 
+                //this needs to be random, should not be generated using the JWT token and an algorithm as if the JWT token 
                 //RefreshTokenId = Guid.NewGuid().ToString(),
-                //Guid is nto strogn enough for this security feature, this is now generated in teh Db - used an attribute tag for this
+                //Guid is not strong enough for this security feature, this is now generated in the Db - used an attribute tag for this
                 JwtId = jwtToken.Id,
                 UserId = user.Id,
                 CreationDate = DateTime.UtcNow,
@@ -217,6 +205,7 @@ namespace Application.ApplicationServices.Authentication
                 return new AuthenticationResponseModel { ClientModel = new AuthenticationResponseToClientModel { Errors = new[] { "The existing Token has not yet expired" } }, RefreshToken = "" };
 
             var jti = potentiallyValidatedToken.Claims.Single(x => String.Equals(x.Type, JwtRegisteredClaimNames.Jti)).Value;
+
             var existingRefreshTokenFromDb = _identityDbContext.JwtRefreshTokens.SingleOrDefault(rt => String.Equals(rt.RefreshTokenId, refreshToken));
             if (existingRefreshTokenFromDb == null)
                 return new AuthenticationResponseModel { ClientModel = new AuthenticationResponseToClientModel { Errors = new[] { "Refresh token does not exist" } }, RefreshToken = "" };

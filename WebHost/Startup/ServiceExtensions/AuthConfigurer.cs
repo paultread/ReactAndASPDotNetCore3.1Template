@@ -22,8 +22,8 @@ namespace WebHost.Startup.ServiceExtensions
 
             public static void ConfigureIdentityAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            //without adding this in here when using JWT - the API endpoint in teh AUth controller will not be hit, returns 500 error, this is likely because it cannot get a hold of the added Db Context
-            //this adds Application user to teh DI pipeline
+            //without adding this in here when using JWT - the API endpoint in the Auth controller will not be hit, returns 500 error, this is likely because it cannot get a hold of the added Db Context
+            //this adds Application user to the DI pipeline
             services
                 .AddDefaultIdentity<ApplicationUser>
                     (options =>
@@ -48,7 +48,7 @@ namespace WebHost.Startup.ServiceExtensions
 
             var tokenValParams = new TokenValidationParameters
             {
-                //validates the token using teh secret key (third part of jwt token)
+                //validates the token using the secret key (third part of jwt token)
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(key: Encoding.ASCII.GetBytes(configuration.GetSection("Authentication").GetSection("JwtBearer").GetSection("SecurityKey").Value)),
                 ValidateIssuer = false,

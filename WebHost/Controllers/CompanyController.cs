@@ -25,13 +25,13 @@ namespace WebHost.Controllers
 
         [Route("/Companies")]
         [HttpGet]
-        //any authoirze schemes you have set up can access this
+        //any authorize schemes you have set up can access this
         //[Authorize]
         //this means in startup you have named the authorize scheme the default name - Bearer'
         //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         //this means in startup you have named the authorize scheme as 'JwtBearer'
         //[Authorize(AuthenticationSchemes = "JwtBearer")]
-        //Allow anonymous top trumps the authoirze tag - beware of this
+        //Allow anonymous top trumps the authorize tag - beware of this
         //[AllowAnonymous]
         public async Task<IActionResult> GetCompanies()
         {

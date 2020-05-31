@@ -15,5 +15,7 @@ namespace Application.Models.Authentication
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
+        [Required]
+        public Boolean KeepLoggedIn { get; set; }
     }
 }

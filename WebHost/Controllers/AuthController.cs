@@ -6,6 +6,7 @@ using Application.Models.Authentication;
 using Application.ApplicationServices.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.JsonWebTokens;
 
 namespace WebHost.Controllers
 {
@@ -33,7 +34,6 @@ namespace WebHost.Controllers
             //public async Task<IActionResult> SignInAsync([FromBody] object authentModelPassedIn)
             //public async Task<IActionResult> SignInAsync()
         {
-            var request = HttpContext.Request;
             var resultOfSignin = await _authenticationService.SignInUserAsync(authentModelPassedIn);
             //var person = authentModelPassedIn;
             //if post request is made with: 
@@ -59,11 +59,10 @@ namespace WebHost.Controllers
 
             //add to cookie in here
 
-            //TOMORROW - cookie is going back to localhost:3000 - different URL, so it is not showing up (although present in headers)... what do I do?
-            HttpContext.Response.Cookies.Append("JwtRefreshTokenn", resultOfSignin.RefreshToken, new CookieOptions() { Secure = true, HttpOnly = true, SameSite = SameSiteMode.None});
-            
-            Response.Cookies.Append("JwtRefreshTokenn2", resultOfSignin.RefreshToken, new CookieOptions() { HttpOnly = true, Secure = true, SameSite = SameSiteMode.None});
-            Response.Cookies.Append("JwtRefreshTokenn3", resultOfSignin.RefreshToken, new CookieOptions() { });
+            HttpContext.Response.Cookies.Append("JwtRefreshToken", resultOfSignin.RefreshToken, new CookieOptions() { Secure = true, HttpOnly = true, SameSite = SameSiteMode.None });
+
+            HttpContext.Response.Cookies.Delete(".AspNetCore.Identity.Application");
+
             return Ok(resultOfSignin.ClientModel);
         }
 
@@ -74,13 +73,39 @@ namespace WebHost.Controllers
         {
             var resultOfSignUp = await _authenticationService.SignUpUserAsync(authModelPassedIn);
             return Ok(resultOfSignUp);
+            //below is best way to do it
             //return Created("uri the newly created resource can be found at on the net", resultOfSignUp);
         }
+        //currently the silent refresh is handled at the client - can intercept using implementation from the website below and silently refresh at server side - but might lead to issues in the client (JWT token would need swapping out and this would need managing when it is returned)
+        //https://channel9.msdn.com/Series/aspnetmonsters/ASPNET-Monsters-111-Authorize-Tag-Helper
 
         [HttpPost("/api/refreshtoken")]
-        public async Task<IActionResult> RefreshTokenAsync(string jwtTOken, string refreshToken)
+        public async Task<IActionResult> RefreshTokenAsync(string jwtToken)
         {
-            await Task.Delay(3000);
+            //refresh token from http only context - that way never enters the app so not prone to csrf
+            var jwtRefreshToken = HttpContext.Request.Cookies["JwtRefreshToken"].Trim();
+            //HERE WHERE COME BACK TO THIS
+            //Now - bool for 'keep logged in' - filter into the equation and update the JWT / RT flow
+            //JWT == expired && RT == valid = new JWT
+            
+            //JWT == expired && RT == expired = && KLI ?? (relogin?)
+            //JWT == valid && RT == expired && KLI = ??
+            //JWT == invalid && RT = expired && KLI ??
+            //JWT == null && RT = expired && KLI = ??
+
+
+
+
+
+
+
+
+            var tester = _authenticationService.GenerateRefreshTokenUsingExisting(jwtToken, jwtRefreshToken);
+            if (tester.Result.ClientModel.Errors != null)
+            {
+                //
+                //
+            }
             return Ok();
         }
 

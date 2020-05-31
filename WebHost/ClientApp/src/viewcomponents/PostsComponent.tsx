@@ -7,6 +7,7 @@ import { RouteComponentProps } from 'react-router';
 import {RequestPostsAction, ReceivePostsAction, iPostsState} from '../ReduxVersion/reduxStore/postsStore';
 import { ApplicationState } from '../store';
 import axiosService from 'axios'
+import axiosServiceWithAuthHeader from '../axiosIndex';
 import { AxiosResponse, AxiosError } from 'axios'
 import {Post} from '../ReduxVersion/reduxStore/postsStore';
 //this gave me jip importing it (below) as in javascript not ts, two ways to fix this - in tsconfig.js added line "noImplicitAny": false in compiler options, but better way was to add file table.d.ts and declared this module here (I have no idea how this links up to here though... maybe through the folder structure? Didnt have to change any settings anyway)
@@ -21,7 +22,8 @@ export const actionCreators = {
         console.log(appState);
         if (appState && appState.postsComponentReducer && appState.postsComponentReducer.isLoading) {
           //axiosService.get(`https://jsonplaceholder.typicode.com/posts`)
-          axiosService.get('https://jsonplaceholder.typicode.com/posts')
+          axiosServiceWithAuthHeader.get('https://jsonplaceholder.typicode.com/posts')
+          //axiosService.get('https://jsonplaceholder.typicode.com/posts')
             .then((response: AxiosResponse<Post[]>) => {
                 console.log(response);
               const { data } = response;

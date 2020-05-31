@@ -5,9 +5,8 @@ import {CompanyContext} from '../contexts/CompaniesContext';
 import axiosService from 'axios'
 import {Table, TableRow, TableCell, TableHeader} from 'carbon-react/lib/components/table';
 import { AxiosResponse, AxiosError } from 'axios'
-import https from 'https';
-import {axiosServiceWithSignInCredToTrue} from '../../axiosIndex';
- 
+import axiosServiceWithAuthHeader from '../../axiosIndex';
+
 
 export interface iCompaniesComponentType {
     Companies: iCompanyType[]
@@ -22,15 +21,13 @@ const CompaniesComponent = () => {
 
 
 
-
+        //Fetch Companies Via Redux Class
         dispatch({ type: 'GET_COMPANIES_FETCH', isLoading: true });
         if (state.isLoading = true){
-            try{
-                // const agent = new https.Agent({  
-                //     rejectUnauthorized: false
-                // });    
-                // await axiosService.get('https://localhost:44309/Companies', { httpsAgent: agent })
-                await axiosServiceWithSignInCredToTrue.get('https://localhost:44309/Companies')
+            try{  
+                //await axiosService.get('https://localhost:44309/Companiess')
+                await axiosServiceWithAuthHeader.get('https://localhost:44309/Companiess')
+                //await axiosServiceWithSignInCredToTrue.get('https://localhost:44309/Companies')
                 .then((response: AxiosResponse<iCompanyType[]>) => {
                     //const data: iCompanyType[] = response.data;
                     const {data} = response;

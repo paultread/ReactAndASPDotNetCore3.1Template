@@ -1,11 +1,19 @@
 import * as React from 'react';
 import {Action, Reducer} from 'redux';
+import {AppThunkAction} from '../../store/index'
 import { Tracing } from 'trace_events';
-
-
 import {store} from '../../index';
+import axiosServiceWithAuthHeader from '../../axiosIndex';
+import {AxiosResponse, AxiosError} from 'axios'
 
 // import * as DateTime from 'react-datetime';
+
+
+
+
+
+
+
 
 //type for component state
 export interface iSignInInterface {
@@ -51,6 +59,11 @@ export interface PostSignupInAction {
     type: 'POST_SIGN_UP';
 }
 
+export interface PostRefreshInAction {
+    type: 'POST_REFRESH_TOKEN'
+}
+
+
 
 
 export interface RecieveSignInResultAction {
@@ -63,13 +76,70 @@ export interface RecieveSignUpResultAction {
     signInState: iSignInInterface;
 }
 
-//added as a test so can log state to console after it has been updated
+//#region tryingToDefineStore.Dispatch<any>type
+//tried to define the type for store.dispatch<any>(actionCreators....) but was nto successful
+export interface actionCreatorsType {
+    postSignIn (emailAddressToSend: string, passwordToSend: string) : AppThunkAction<tSignInActionType>,
 
-export interface PostSignInStateUpdated {
-    type: 'Post_SIGN_IN_STATE_UPDATED'
+    postSignup (emailAddressToSend: string, passwordToSend: string) : AppThunkAction<tSignInActionType>
+}
+//#endregion
+
+export const actionCreators = {
+    postSignIn : (emailAddressToSend: string, passwordToSend: string, keepLoggedIn: boolean) : AppThunkAction<tSignInActionType> => async (dispatch, getState) => {
+        store.dispatch({type:'POST_SIGN_IN'});
+        await axiosServiceWithAuthHeader.post('https://localhost:44309/SignIn', {username: emailAddressToSend, password: passwordToSend, keepLoggedIn: keepLoggedIn} )
+        .then((response: AxiosResponse<iSignInInterface>) => {
+            const {data} = response;
+            store.dispatch({type:'POST_SIGN_IN_RESULT_RECEIVED', signInState: data });
+        })
+        .catch((error: AxiosError) => {
+            throw error;
+        })
+    } ,
+    postSignup : (emailAddressToSend: string, passwordToSend: string) : AppThunkAction<tSignInActionType> => async (dispatch, getState) => {
+        //to update isAuthenticating to stop any other requests beign submitted via e.g. useEffect repeatedly submitting
+        store.dispatch({type:'POST_SIGN_UP'});
+        //args need to have same name as props in the obj on server, albeit case does not matter
+        //await axiosService.post('https://localhost:44309/SignUp', {username: emailAddressToSend, password: passwordToSend} )
+        await axiosServiceWithAuthHeader.post('https://localhost:44309/SignUp', {username: emailAddressToSend, password: passwordToSend} )
+        //await axiosService.get('http://localhost:59333/SignIn')
+       
+        //.then((response: AxiosResponse<iUser>) => {
+        //.then((response: AxiosResponse<iSignInInterface>) => {
+        .then((response: any) => {
+            // const {data} = response;
+            console.log(response);
+            const {data} = response;
+            // dispatch({type:'POST_SIGN_IN_RESULT_RECEIVED', data: data })
+        })
+        .catch((error: AxiosError) => {
+            console.log('AXIOSERROR::' + error.message);
+            throw error;
+        })
+    },
+
+    postRefresh: () : AppThunkAction<tSignInActionType> => async (dispatch, getState) => {
+        store.dispatch({type:'POST_REFRESH_TOKEN'});
+        await axiosServiceWithAuthHeader.post('https://localhost:44309/api/refreshtoken', 
+        {
+            jwtToken: store.getState().authReducer.jwtAccessToken
+            //, refreshToken: "isInHttpOnlyCookie"
+        }
+        )
+
+        .then (() => {
+            //here tomorrow - watch video see what he does with callign api to submit jwt token and gettign httpOnly cookie
+        })
+        .catch (() => {
+
+        })
+    }
 }
 
-export type tSignInActionType = PostSigninInAction | PostSignupInAction | RecieveSignInResultAction | RecieveSignUpResultAction | PostSignInStateUpdated ;
+
+
+export type tSignInActionType = PostSigninInAction | PostSignupInAction | RecieveSignInResultAction | RecieveSignUpResultAction | PostRefreshInAction;
 
 const signInReducer: Reducer<iSignInInterface> = (state: iSignInInterface | undefined, incomingAction : Action): iSignInInterface => {
     if (state === undefined) {
@@ -83,31 +153,16 @@ const signInReducer: Reducer<iSignInInterface> = (state: iSignInInterface | unde
     }
     const action = incomingAction as tSignInActionType;
     switch (action.type){
-        case('POST_SIGN_IN' || 'POST_SIGN_UP'):
+        case('POST_SIGN_IN' || 'POST_SIGN_UP' || 'POST_REFRESH_TOKEN'):
             return state
-            // {
-            //     ...state,//needed???
-            //     user: initialisedUser,
-            //     authProcessInAction: true,
-            //     isAuthenticated: false,
-            //     jwtAccessToken: '',
-            //     expiresInSeconds: 0
-            // };
         case('POST_SIGN_IN_RESULT_RECEIVED' || 'POST_SIGN_UP_RESULT_RECEIVED'):
-        //console.log('jjj : ', state);
             return {
-                //I need to be updating onepart of state here, not all of it
-                //...state,
                 user: action.signInState.user,
                 authProcessInAction: false,
                 isAuthenticated: action.signInState.isAuthenticated,
                 jwtAccessToken: action.signInState.jwtAccessToken,
                 expiresInSeconds: action.signInState.expiresInSeconds
             }
-        case('Post_SIGN_IN_STATE_UPDATED'):
-        //console.log("here I am not coming up as null: ", state);
-        //console.log(store.getState());
-            return state;
         default:
             return state;
     }

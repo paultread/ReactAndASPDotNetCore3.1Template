@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { iCompanyState, iCompaniesState} from '../reduxStore/companiesStore';
 import axiosService, {AxiosResponse, AxiosError} from 'axios';
+import axiosServiceWithAuthHeader from '../../axiosIndex';
 import { Table, TableRow, TableCell, TableHeader } from 'carbon-react/lib/components/table';
 
 import {AppThunkAction, ApplicationState } from '../../store/index';
@@ -19,7 +20,8 @@ export const actionCreators = {
     requestCompanies: () : AppThunkAction<CompaniesActionTypes> => (dispatch, getState) => {
         const appState = getState();
         if (appState && appState.companiesReducer && appState.companiesReducer.isLoading){
-            axiosService.get('http://localhost:59333/Companies')
+            //axiosService.get('http://localhost:59333/Companies')
+            axiosServiceWithAuthHeader.get('http://localhost:59333/Companies')
             .then((response: AxiosResponse<iCompanyState[]>) => {
                 const {data} = response;
                 dispatch({type:'GET_COMPANIES_FETCHED_REDUX', isLoading: false, companies: data})
